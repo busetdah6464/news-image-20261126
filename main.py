@@ -16,8 +16,14 @@ OUT = os.path.join(os.environ.get("MAKEFUN_OUTPUT_DIR", "/output"), "entry.png")
 
 
 def main():
+    if not os.path.isfile(SRC):
+        print("missing " + SRC, file=sys.stderr)
+        return 1
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     shutil.copyfile(SRC, OUT)
+    if os.path.getsize(SRC) != os.path.getsize(OUT):
+        print("copy mismatch: " + OUT, file=sys.stderr)
+        return 1
     print("wrote " + OUT)
     return 0
 
